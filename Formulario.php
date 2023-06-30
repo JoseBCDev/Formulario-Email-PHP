@@ -1,5 +1,7 @@
 <?php
 
+require("mail.php");
+
 function validate_campos($nombre,$email,$asunto,$mensaje)
 {
     return !empty($nombre) && !empty($email) && !empty($asunto) && !empty($mensaje);
@@ -10,9 +12,15 @@ $status = "";
 if (isset($_POST["btn-form"])) {
     if (validate_campos($_POST["name"],$_POST["email"],$_POST["asunto"],$_POST["mensaje"])) {
         $name = $_POST["name"];
-        $email = $_POST["asunto"];
+        $email = $_POST["email"];
         $asunto = $_POST["asunto"];
         $mensaje = $_POST["mensaje"];
+
+        //Contenido del Correo
+        $cuerpo = "$name <$email> te envia el siguiente mensaje: <br><br> $mensaje";
+
+        //Mandar Correo
+        sendMail($asunto,$cuerpo,$email,$name,true);
 
         $status = "success";
     }else{
